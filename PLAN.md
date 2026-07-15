@@ -31,11 +31,11 @@ tests/
 
 ## 5. 구현 단계
 
-- [ ] 1단계 - `connection.py`: DB 파일 연결 함수(`get_connection`), 최초 실행 시 `items` 테이블 자동 생성(`CREATE TABLE IF NOT EXISTS`).
-- [ ] 2단계 - `item_repository.py`: `create_item`, `get_item`, `list_items`, `update_item`, `delete_item` 구현.
-- [ ] 3단계 - `main.py`: CRUD 시나리오를 순차 실행하는 데모 스크립트 (생성 → 조회 → 수정 → 삭제 → 재조회).
-- [ ] 4단계 - `tests/test_item_repository.py`: `:memory:` DB로 격리된 CRUD 단위 테스트.
-- [ ] 5단계 - 수동 검증: `main.py`를 두 번 연속 실행하여 `data/app.db`에 데이터가 유지되는지 확인.
+- [x] 1단계 - `connection.py`: DB 파일 연결 함수(`get_connection`), 최초 실행 시 `items` 테이블 자동 생성(`CREATE TABLE IF NOT EXISTS`).
+- [x] 2단계 - `item_repository.py`: `create_item`, `get_item`, `list_items`, `update_item`, `delete_item` 구현. **설계 변경**: 함수가 `db_path`를 직접 받는 대신 이미 열린 `sqlite3.Connection`을 인자로 받도록 했다 (이유: `:memory:` DB는 연결을 닫는 순간 사라지므로, 함수마다 자체적으로 연결을 열고 닫으면 테스트에서 여러 CRUD 호출 간 데이터가 유지되지 않는다).
+- [x] 3단계 - `main.py`: CRUD 시나리오를 순차 실행하는 데모 스크립트 (생성 → 조회 → 수정 → 삭제 → 재조회).
+- [x] 4단계 - `tests/test_item_repository.py`: `:memory:` DB로 격리된 CRUD 단위 테스트. pytest fixture로 테스트마다 새 connection 제공. 5개 테스트 통과.
+- [x] 5단계 - 수동 검증: 별도 프로세스에서 데이터 삽입 후 재시작하여 `data/app.db`에서 재조회, 데이터 유지 확인.
 
 ## 6. 완료 기준 (Definition of Done)
 
@@ -48,3 +48,8 @@ tests/
 ## 7. 미결정/추후 논의 사항
 
 - (없음, 발견 시 추가)
+
+## 8. 변경 이력
+
+- 최초 작성
+- Repository 함수 시그니처를 `db_path` 대신 `conn`(열린 connection)을 받도록 변경 (`:memory:` 테스트 격리 문제 해결)

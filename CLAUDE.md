@@ -36,7 +36,8 @@ pytest
 ## 코드 컨벤션
 
 - DB 연결은 항상 `with` 구문으로 열고 닫는다 (연결 누수 방지).
-- 테스트는 실제 파일(`data/app.db`)이 아닌 `:memory:` DB를 사용해 격리한다.
+- `item_repository.py`의 CRUD 함수는 `db_path`가 아니라 이미 열린 `sqlite3.Connection`을 인자로 받는다. (`:memory:` DB는 연결이 닫히면 사라지므로, 하나의 시나리오/테스트 안에서 여러 CRUD 호출이 같은 데이터를 봐야 할 때는 connection을 공유해야 한다.)
+- 테스트는 실제 파일(`data/app.db`)이 아닌 `:memory:` DB를 사용해 격리한다 (pytest fixture로 테스트마다 새 connection 제공).
 - SQL은 항상 파라미터 바인딩(`?` 플레이스홀더)을 사용한다 (문자열 포매팅으로 SQL을 조립하지 않는다 — SQL Injection 방지).
 - 타입 힌트를 사용한다.
 
