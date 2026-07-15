@@ -46,3 +46,27 @@ def test_delete_item_removes_row(conn):
 
 def test_get_item_missing_id_returns_none(conn):
     assert get_item(conn, 999) is None
+
+
+def test_get_connection_creates_parent_directory_and_file(tmp_path):
+    """:memory:가 아닌 실제 파일 경로를 사용할 때 상위 폴더/DB 파일이 정상 생성되는지 확인."""
+    db_path = tmp_path / "nested" / "app.db"
+    assert not db_path.parent.exists()
+
+    with get_connection(db_path) as connection:
+        create_item(connection, "품목A", 10)
+
+    assert db_path.exists()
+
+
+def test_data_persists_across_separate_connections_to_same_file(tmp_path):
+    """앱 재시작(=connection을 새로 여는 것) 후에도 데이터가 유지되는지 확인 (영속성 요건)."""
+    db_path = tmp_path / "app.db"
+
+    with get_connection(db_path) as connection:
+        create_item(connection, "품목A", 10)
+
+    with get_connection(db_path) as connection:
+        rows = list_items(connection)
+
+    assert [row["name"] for row in rows] == ["품목A"]

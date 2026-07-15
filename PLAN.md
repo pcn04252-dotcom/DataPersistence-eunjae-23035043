@@ -43,7 +43,7 @@ tests/
 - `data/app.db` 파일에 데이터가 저장되며, 프로세스를 재시작해도 데이터가 유지된다.
 - CRUD 4종 함수가 모두 테스트로 검증된다.
 - DB 연결은 `with` 구문(context manager)으로 안전하게 열고 닫힌다.
-- `pytest` 전체 통과.
+- `pytest` 전체 통과 (7개), `src/storage/` 100% 커버리지.
 
 ## 7. 미결정/추후 논의 사항
 
@@ -54,3 +54,4 @@ tests/
 - 최초 작성
 - Repository 함수 시그니처를 `db_path` 대신 `conn`(열린 connection)을 받도록 변경 (`:memory:` 테스트 격리 문제 해결)
 - Harness 도입: `pyproject.toml`(pytest/ruff 설정), `requirements-dev.txt`(pytest, ruff), GitHub Actions CI(`.github/workflows/ci.yml`) 추가. `ruff check` 결과 자동 수정 가능한 사소한 스타일(구식 `Optional[X]` 표기) 1건만 발견되어 `X | None`으로 수정.
+- 테스트 커버리지 보강: 커버리지 측정 결과 `connection.py`의 실제 파일 경로(`:memory:`가 아닌) 분기가 미검증 상태였음을 발견 — `tmp_path` 기반으로 "상위 폴더 자동 생성" + "연결을 새로 열어도(=앱 재시작) 데이터 유지" 테스트 2건 추가. `src/storage/` 100% 커버리지 달성 (7개 테스트).
