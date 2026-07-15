@@ -1,5 +1,4 @@
 import sqlite3
-from typing import Optional
 
 
 def create_item(conn: sqlite3.Connection, name: str, quantity: int) -> int:
@@ -10,7 +9,7 @@ def create_item(conn: sqlite3.Connection, name: str, quantity: int) -> int:
     return cursor.lastrowid
 
 
-def get_item(conn: sqlite3.Connection, item_id: int) -> Optional[sqlite3.Row]:
+def get_item(conn: sqlite3.Connection, item_id: int) -> sqlite3.Row | None:
     return conn.execute(
         "SELECT id, name, quantity FROM items WHERE id = ?", (item_id,)
     ).fetchone()
