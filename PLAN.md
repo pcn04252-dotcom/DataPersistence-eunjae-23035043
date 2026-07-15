@@ -55,3 +55,4 @@ tests/
 - Repository 함수 시그니처를 `db_path` 대신 `conn`(열린 connection)을 받도록 변경 (`:memory:` 테스트 격리 문제 해결)
 - Harness 도입: `pyproject.toml`(pytest/ruff 설정), `requirements-dev.txt`(pytest, ruff), GitHub Actions CI(`.github/workflows/ci.yml`) 추가. `ruff check` 결과 자동 수정 가능한 사소한 스타일(구식 `Optional[X]` 표기) 1건만 발견되어 `X | None`으로 수정.
 - 테스트 커버리지 보강: 커버리지 측정 결과 `connection.py`의 실제 파일 경로(`:memory:`가 아닌) 분기가 미검증 상태였음을 발견 — `tmp_path` 기반으로 "상위 폴더 자동 생성" + "연결을 새로 열어도(=앱 재시작) 데이터 유지" 테스트 2건 추가. `src/storage/` 100% 커버리지 달성 (7개 테스트).
+- **최종 코드 리뷰 후 수정**: 독립 에이전트 리뷰에서 README.md가 "5종 테스트"로 표기되어 실제 7개와 불일치함을 발견 → 정정. `requirements-dev.txt`에 `pytest-cov`가 없어 README/PLAN이 언급하는 커버리지 수치를 재현할 수 없던 문제 → 추가. CLAUDE.md가 이 repo의 `main.py`에 `stdin.reconfigure`까지 적용한다고 서술했으나 실제로는 `input()`을 쓰지 않아 불필요했던 과장된 문구 → 정정. README에 누락된 `ruff check .` 안내 추가, `ci.yml`의 중복 `pip install ruff` 라인 제거.

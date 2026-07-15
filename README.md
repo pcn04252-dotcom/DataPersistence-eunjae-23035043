@@ -19,10 +19,11 @@ python -m src.main
 ```
 pip install -r requirements-dev.txt
 pytest
+ruff check .
 ```
 
 ## 검증한 것
 
 - `sqlite3` 표준 라이브러리만으로 CRUD(생성/조회/수정/삭제) 전체 구현
-- 프로세스를 재시작해도 데이터가 유지되는지 수동 검증 완료
-- `:memory:` DB를 이용한 격리된 단위 테스트 5종 통과
+- `:memory:` DB 기반 CRUD 테스트 5종 + `tmp_path` 기반 실제 파일 영속성 자동화 테스트 2종, 총 `pytest` 7개 통과 (`src/storage/` 100% 커버리지)
+- 프로세스를 재시작해도(=connection을 새로 열어도) 데이터가 유지되는지 자동화 테스트로 검증

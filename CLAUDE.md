@@ -48,4 +48,4 @@ ruff check .
 
 - `data/app.db`는 `.gitignore`에 포함되어 있으므로 커밋되지 않는다. 스키마 자체는 코드(`connection.py`)로 재현 가능해야 한다.
 - 이 repo의 스키마/영속성 방식(SQLite)은 `DataMonitor`, `DummyDataGenerator`, `SampleOrderSystem`과 설계 방향을 공유하지만, 각 repo는 독립된 저장소이므로 실제 코드/DB 파일을 공유하지 않는다.
-- 콘솔 출력이 있는 진입점(`main.py`)에서는 Windows 콘솔 기본 코드페이지(cp949) 한글 깨짐 방지를 위해 `sys.stdout.reconfigure(encoding="utf-8")` / `sys.stdin.reconfigure(encoding="utf-8")`를 적용한다 (`ConsoleMVC` PoC에서 확인된 이슈).
+- 콘솔 출력이 있는 진입점(`main.py`)에서는 Windows 콘솔 기본 코드페이지(cp949) 한글 깨짐 방지를 위해 `sys.stdout.reconfigure(encoding="utf-8")`를 적용한다 (`ConsoleMVC` PoC에서 확인된 이슈). 이 repo의 `main.py`는 사용자 입력(`input()`)을 받지 않는 데모 스크립트라 `stdin` 재설정은 불필요하다.
